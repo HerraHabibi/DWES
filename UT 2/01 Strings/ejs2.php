@@ -5,6 +5,9 @@
   <BODY>
     <?php
       $ip="192.18.16.204";
+	  
+	  echo "IP " . $ip . " en binario es  ";
+	  
       $ipSeparada = explode(".", $ip);
 	  for ($i = 0; $i < 4; $i++) {
 		$ipSeparadaBin = decbin($ipSeparada[$i]);
