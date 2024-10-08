@@ -4,7 +4,7 @@
     <title>EJ1-Calculadora simple</title>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-</head>
+  </head>
   <body>
     <h1>Calculadora</h1>
     <?php
