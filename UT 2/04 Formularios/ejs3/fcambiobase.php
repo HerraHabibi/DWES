@@ -38,8 +38,8 @@
 
         echo "
           <form>
-            <label for='decimal'>Número decimal: </label>
-            <input type='text' name='decimal' id='decimal' value='$decimal' readonly>
+            <label for='decimalRes'>Número decimal: </label>
+            <input type='text' name='decimalRes' id='decimalRes' value='$decimal' readonly>
             <br><br>
             <table border='1'>
               $tabla

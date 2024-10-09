@@ -14,8 +14,8 @@
 
       echo "
         <form>
-          <label for='decimal'>Número decimal: </label>
-          <input type='text' name='decimal' id='decimal' value='$decimal' readonly>
+          <label for='decimalRes'>Número decimal: </label>
+          <input type='text' name='decimalRes' id='decimalRes' value='$decimal' readonly>
           <br><br>
           <label for='binario'>Número binario: </label>
           <input type='text' name='binario' id='binario' value='$binario' readonly>

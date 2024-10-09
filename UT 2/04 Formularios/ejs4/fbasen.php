@@ -4,7 +4,7 @@
     <title>EJ4-Cambio de base</title>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-</head>
+  </head>
   <body>
     <h1>Cambio de base</h1>
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
