@@ -36,33 +36,28 @@
         $nacimiento = $_REQUEST['nacimiento'];
         $localidad = $_REQUEST['localidad'];
 
-        $archivo = 'alumnos1.txt';
+        $archivo = 'alumnos2.txt';
 
-        $caracteresNombre = 40;
-        $caracteresApellido1 = 81 - 40;
-        $caracteresApellido2 = 123 - 82;
-        $caracteresNacimiento = 133 - 123;
-        $caracteresLocalidad = 160 - 133;
-        
+        $delimitador = '##';
+
         limpiar($nombre);
         limpiar($apellido1);
         limpiar($apellido2);
         limpiar($nacimiento);
         limpiar($localidad);
 
-        validar($nombre, $caracteresNombre, 'El nombre');
-        validar($apellido1, $caracteresApellido1, 'El primer apellido');
-        validar($apellido2, $caracteresApellido2, 'El segundo apellido');
-        validar($nacimiento, $caracteresNacimiento, 'La fecha de nacimiento');
-        validar($localidad, $caracteresLocalidad, 'La localidad');
+        validar($nombre, 'El nombre');
+        validar($apellido1, 'El primer apellido');
+        validar($apellido2, 'El segundo apellido');
+        validar($nacimiento, 'La fecha de nacimiento');
+        validar($localidad, 'La localidad');
 
-        $nombreFormateado = darFormato($nombre, $caracteresNombre);
-        $apellido1Formateado = darFormato($apellido1, $caracteresApellido1);
-        $apellido2Formateado = darFormato($apellido2, $caracteresApellido2);
-        $nacimientoFormateado = darFormato($nacimiento, $caracteresNacimiento);
-        $localidadFormateada = darFormato($localidad, $caracteresLocalidad);
+        $nombreFormateado = darFormato($nombre, $delimitador);
+        $apellido1Formateado = darFormato($apellido1, $delimitador);
+        $apellido2Formateado = darFormato($apellido2, $delimitador);
+        $nacimientoFormateado = darFormato($nacimiento, $delimitador);
 
-        guardarAlumno($archivo, $nombreFormateado, $apellido1Formateado, $apellido2Formateado, $nacimientoFormateado, $localidadFormateada);
+        guardarAlumno($archivo, $nombreFormateado, $apellido1Formateado, $apellido2Formateado, $nacimientoFormateado, $localidad);
         avisarAlumnoGuardado($nombre, $apellido1, $apellido2);
       }
 
@@ -72,21 +67,13 @@
         $value = htmlspecialchars($value);
       }
 
-      function validar($dato, $caracteres, $campo) {
-        if (mb_strlen($dato, 'UTF-8') > $caracteres)
-          die("$campo no puede superar los $caracteres caracteres");
-        
-        else if ($dato == '')
+      function validar($dato, $campo) {
+        if ($dato == '')
           die("$campo no puede ser nulo");
       }
 
-      function darFormato($dato, $caracteres) {
-        $datoFormateado = $dato;
-
-        while (mb_strlen($datoFormateado, 'UTF-8') < $caracteres)
-          $datoFormateado .= ' ';
-
-        return $datoFormateado;
+      function darFormato($dato, $delimitador) {
+        return $dato . $delimitador;
       }
 
       function guardarAlumno($archivo, $nombre, $apellido1, $apellido2, $nacimiento, $localidad) {
