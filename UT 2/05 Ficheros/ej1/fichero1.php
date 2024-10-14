@@ -90,7 +90,7 @@
       }
 
       function guardarAlumno($archivo, $nombre, $apellido1, $apellido2, $nacimiento, $localidad) {
-        $datos = "$nombre$apellido1$apellido2$nacimiento$localidad\n";
+        $datos = $nombre . $apellido1 . $apellido2 . $nacimiento . $localidad . "\n";
         file_put_contents($archivo, $datos,FILE_APPEND);
       }
 

@@ -52,12 +52,7 @@
         validar($nacimiento, 'La fecha de nacimiento');
         validar($localidad, 'La localidad');
 
-        $nombreFormateado = darFormato($nombre, $delimitador);
-        $apellido1Formateado = darFormato($apellido1, $delimitador);
-        $apellido2Formateado = darFormato($apellido2, $delimitador);
-        $nacimientoFormateado = darFormato($nacimiento, $delimitador);
-
-        guardarAlumno($archivo, $nombreFormateado, $apellido1Formateado, $apellido2Formateado, $nacimientoFormateado, $localidad);
+        guardarAlumno($archivo, $delimitador, $nombre, $apellido1, $apellido2, $nacimiento, $localidad);
         avisarAlumnoGuardado($nombre, $apellido1, $apellido2);
       }
 
@@ -72,12 +67,8 @@
           die("$campo no puede ser nulo");
       }
 
-      function darFormato($dato, $delimitador) {
-        return $dato . $delimitador;
-      }
-
-      function guardarAlumno($archivo, $nombre, $apellido1, $apellido2, $nacimiento, $localidad) {
-        $datos = "$nombre$apellido1$apellido2$nacimiento$localidad\n";
+      function guardarAlumno($archivo, $delimitador, $nombre, $apellido1, $apellido2, $nacimiento, $localidad) {
+        $datos = $nombre . $delimitador . $apellido1 . $delimitador . $apellido2 . $delimitador . $nacimiento . $delimitador . $localidad . "\n";
         file_put_contents($archivo, $datos,FILE_APPEND);
       }
 
