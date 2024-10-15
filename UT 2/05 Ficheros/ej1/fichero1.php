@@ -40,7 +40,7 @@
 
         $caracteresNombre = 40;
         $caracteresApellido1 = 81 - 40;
-        $caracteresApellido2 = 123 - 82;
+        $caracteresApellido2 = 123 - 81;
         $caracteresNacimiento = 133 - 123;
         $caracteresLocalidad = 160 - 133;
         
@@ -91,7 +91,7 @@
 
       function guardarAlumno($archivo, $nombre, $apellido1, $apellido2, $nacimiento, $localidad) {
         $datos = $nombre . $apellido1 . $apellido2 . $nacimiento . $localidad . "\n";
-        file_put_contents($archivo, $datos,FILE_APPEND);
+        file_put_contents($archivo, $datos, FILE_APPEND);
       }
 
       function avisarAlumnoGuardado($nombre, $apellido1, $apellido2) {
