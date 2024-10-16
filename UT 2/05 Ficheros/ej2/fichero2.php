@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='es'>
   <head>
-    <title>EJ1-Formulario que recoja los datos de alumnos y se almacenen en un txt</title>
+    <title>EJ2-Formulario que recoja los datos de alumnos y se almacenen en un txt separado por el delimitador '##'</title>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   </head>
@@ -35,16 +35,15 @@
         $apellido2 = $_REQUEST['apellido2'];
         $nacimiento = $_REQUEST['nacimiento'];
         $localidad = $_REQUEST['localidad'];
-
-        $archivo = 'alumnos2.txt';
-
-        $delimitador = '##';
-
+        
         limpiar($nombre);
         limpiar($apellido1);
         limpiar($apellido2);
         limpiar($nacimiento);
         limpiar($localidad);
+
+        $archivo = 'alumnos2.txt';
+        $delimitador = '##';
 
         validar($nombre, 'El nombre');
         validar($apellido1, 'El primer apellido');

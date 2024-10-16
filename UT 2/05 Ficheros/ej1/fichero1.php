@@ -35,6 +35,12 @@
         $apellido2 = $_REQUEST['apellido2'];
         $nacimiento = $_REQUEST['nacimiento'];
         $localidad = $_REQUEST['localidad'];
+        
+        limpiar($nombre);
+        limpiar($apellido1);
+        limpiar($apellido2);
+        limpiar($nacimiento);
+        limpiar($localidad);
 
         $archivo = 'alumnos1.txt';
 
@@ -44,12 +50,6 @@
         $caracteresNacimiento = 133 - 123;
         $caracteresLocalidad = 160 - 133;
         
-        limpiar($nombre);
-        limpiar($apellido1);
-        limpiar($apellido2);
-        limpiar($nacimiento);
-        limpiar($localidad);
-
         validar($nombre, $caracteresNombre, 'El nombre');
         validar($apellido1, $caracteresApellido1, 'El primer apellido');
         validar($apellido2, $caracteresApellido2, 'El segundo apellido');
