@@ -4,7 +4,7 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-    <title>Cookies - Página 1</title>
+    <title>Cookies - Página 3</title>
   </head>
   <body>
     <?php
@@ -14,7 +14,7 @@
     ?>
 
     <div>
-      <b>COOKIES - PÁGINA 1</b>
+      <b>COOKIES - PÁGINA 3</b>
       <br><br>
     </div>
 
