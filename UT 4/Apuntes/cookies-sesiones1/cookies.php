@@ -53,7 +53,7 @@
         $usuario = $_POST['usuario'];
         $pass = $_POST['pass'];
 
-        logearse($usuario, $pass);
+        login($usuario, $pass);
       }
     ?>
   </body>
