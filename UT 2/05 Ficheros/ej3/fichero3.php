@@ -18,12 +18,15 @@
   <!-- FUNCIONES -->
     <?php
       function leerLineas($archivo) {
-        $archivoAbierto = fopen($archivo, "r");
-        if ($archivoAbierto) {
-          while (($linea = fgets($archivoAbierto)) !== false) {
-            // TODO
+        $archivo = fopen($archivo, "r");
+
+        if ($archivo) {
+          while (($linea = fgets($archivo)) !== false) {
+            $datosUsuarioLeido = explode($delimitador, $linea);
+            $usuarioLeido = $datosUsuarioLeido[0];
           }
-          fclose($archivoAbierto);
+
+          fclose($archivo);
         }
       }
     ?>
