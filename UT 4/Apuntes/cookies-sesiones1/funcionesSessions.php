@@ -9,8 +9,8 @@
     $_SESSION["usuario"] = $usuario;
     $_SESSION["pass"] = $pass;
 
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
+    // Se inicia la sesión
+    session_start();
   }
 
   // Busca si existe un usuario con el nombre y contraseña introducidos y lo devuelve

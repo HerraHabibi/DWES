@@ -1,8 +1,3 @@
-<?php
-  // Inicio de la sesión
-  session_start();
-?>
-
 <!DOCTYPE html>
 <html>
   <head> 
@@ -23,20 +18,12 @@
       <br><br>
     </div>
 
-    <nav>
-      <b>MENÚ</b>
-      <ul>
-        <li><a href='./sessions.php'>Login</a></li>
-        <li><a href='./sessions1.php'>Página 1</a></li>
-        <li><a href='./sessions2.php'>Página 2</a></li>
-        <li><a href='./sessions3.php'>Página 3</a></li>
-      </ul>
-      <br>
-    </nav>
-
     <?php
       if(isset($_SESSION['usuario'])) {
-        echo 'Hola ' . $_SESSION['usuario'] . '<br>';
+        echo 'Sesión iniciada con el usuario ' . $_SESSION['usuario'] . '<br>';
+
+        header('Location: sessionsMenu.php');
+        exit;
 
       } else {
     ?>
