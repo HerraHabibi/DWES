@@ -4,13 +4,21 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-equiv='X-UA-Compatible' content='ie=edge'>
     <title>Alta productos - Web Compras</title>
-  </head>
+    <link rel='stylesheet' href='../css/comun.css'>
+    </head>
   <body>
     <?php
-      include 'handlerErrores.php';
-      include 'conexionBd.php';
+      include '../handlerErrores.php';
+      include '../conexionBd.php';
       include 'fComaltapro.php';
     ?>
+
+    <nav>
+      <a href='../gestionInternaGeneral.html'>Atrás</a>
+      <a href='comaltacat.php'>Alta categorías</a>
+      <a href='comaltapro.php'>Alta productos</a>
+      <a href='comaltaalm.php'>Alta almacenes</a>
+    </nav>
 
     <div>
       <b>Crear nuevo producto</b>

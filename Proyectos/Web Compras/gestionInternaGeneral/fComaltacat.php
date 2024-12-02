@@ -36,7 +36,8 @@
 
   // Función para insertar el nuevo categoría en la base de datos
   function insertarCat($codCat, $nomCat) {
-    $sql = "INSERT INTO categoria (id_categoria, nombre) VALUES (:id_categoria, :nombre)";
+    $sql = "INSERT INTO categoria (id_categoria, nombre)
+              VALUES (:id_categoria, :nombre)";
     $params = [':id_categoria' => $codCat, ':nombre' => $nomCat];
 
     $valido = operarBd($sql, $params);
