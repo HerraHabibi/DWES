@@ -1,17 +1,16 @@
-<!DOCTYPE html>
 <html>
   <head> 
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-    <title>Alta categorías - Web Compras</title>
+    <title>Alta productos - Web Compras</title>
     <link rel='stylesheet' href='../css/comun.css'>
     </head>
   <body>
     <?php
       include '../handlerErrores.php';
       include '../conexionBd.php';
-      include 'fComaltacat.php';
+      include 'fComconstock.php';
     ?>
 
     <nav>
@@ -24,26 +23,23 @@
     </nav>
 
     <div>
-      <b>Crear nueva categoría</b>
+      <b>Consulta de stock</b>
       <br><br>
     </div>
 
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
-      <b>Nombre categoría: </b><input type='text' name='nomCat'>
+      <b>Producto: </b><?php selectProds(); ?>
       <br><br>
-      <input type='submit' value='Crear'>
+      <input type='submit' value='Ver stock'>
     </form>
     
     <?php
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $nomCat = $_POST['nomCat'];
+        $codProd = isset($_POST['id_producto']) ? $_POST['id_producto'] : null;
 
-        limpiar($nomCat);
+        validarProd($codProd);
 
-        $ultCat = buscarUltimaCat();
-        $codCat = calcularCodNuevaCat($ultCat);
-
-        insertarCat($codCat, $nomCat);
+        consultarStock($codProd);
       }
     ?>
   </body>

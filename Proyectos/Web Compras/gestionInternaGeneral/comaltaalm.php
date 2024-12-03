@@ -20,6 +20,7 @@
       <a href='comaltapro.php'>Alta productos</a>
       <a href='comaltaalm.php'>Alta almacenes</a>
       <a href='comaprpro.php'>Aprovisionar productos</a>
+      <a href='comconstock.php'>Consulta stock</a>
     </nav>
 
     <div>
