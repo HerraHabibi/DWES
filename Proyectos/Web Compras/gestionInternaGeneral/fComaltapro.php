@@ -31,8 +31,8 @@
     if (!is_numeric($precioProd))
       trigger_error('El valor debe ser un número', E_USER_WARNING);
 
-    if ($precioProd < 0)
-      trigger_error('El precio no puede ser negativo', E_USER_WARNING);
+    if ($precioProd < 0.01)
+      trigger_error('El precio no puede ser inferior a 0.01€', E_USER_WARNING);
     
     if (is_int($precioProd) || intval($precioProd) == $precioProd)
       $precioProd = floatval($precioProd);

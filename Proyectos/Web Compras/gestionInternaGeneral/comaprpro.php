@@ -10,7 +10,7 @@
     <?php
       include '../handlerErrores.php';
       include '../conexionBd.php';
-      include 'fComaltapro.php';
+      include 'fComaprpro.php';
     ?>
 
     <nav>
@@ -22,37 +22,33 @@
     </nav>
 
     <div>
-      <b>Crear nuevo producto</b>
+      <b>Aprovisionar productos</b>
       <br><br>
     </div>
 
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
-      <b>Nombre: </b><input type='text' name='nomProd'>
+      <b>Producto: </b><?php selectProds(); ?>
+      <br><br>
+      <b>Almacén: </b><?php selectAlms(); ?>
       <br><br> 
-      <b>Precio: </b><input type='number' name='precioProd' min='0.01' step='0.01'>
+      <b>Cantidad: </b><input type='number' name='cantidad' min='1' step='1'>
       <br><br>
-      <b>Categoría: </b><?php selectCats(); ?>
-      <br><br>
-      <input type='submit' value='Crear'>
+      <input type='submit' value='Aprovisionar'>
     </form>
     
     <?php
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $nomProd = $_REQUEST['nomProd'];
-        $precioProd = $_REQUEST['precioProd'];
-        $codCat = isset($_POST['id_categoria']) ? $_POST['id_categoria'] : null;
+        $codProd = isset($_POST['id_producto']) ? $_POST['id_producto'] : null;
+        $codAlm = isset($_POST['num_almacen']) ? $_POST['num_almacen'] : null;
+        $cantidad = $_REQUEST['cantidad'];
 
-        limpiar($nomProd);
-        limpiar($precioProd);
+        limpiar($cantidad);
 
-        validarNombre($nomProd);
-        validarPrecio($precioProd);
-        validarCat($codCat);
+        validarProd($codProd);
+        validarAlm($codAlm);
+        validarCantidad($cantidad);
 
-        $ultProd = buscarUltimoProd();
-        $codProd = calcularCodNuevoProd($ultProd);
-
-        insertarProd($codProd, $nomProd, $precioProd, $codCat);
+        aprovisionarProducto($codProd, $codAlm, $cantidad);
       }
     ?>
   </body>
