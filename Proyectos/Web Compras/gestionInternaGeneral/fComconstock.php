@@ -2,6 +2,7 @@
   function selectProds() {
     $sql = "SELECT id_producto, nombre
               FROM producto";
+              
     $resultado = operarBd($sql);
     
     echo "<select name='id_producto'>";
@@ -49,17 +50,19 @@
     $sql = "SELECT almacen.localidad, almacena.cantidad
               FROM almacen
               JOIN almacena ON almacen.num_almacen = almacena.num_almacen
-              WHERE almacena.id_producto = '$codProd'";
+              WHERE almacena.id_producto = :id_producto";
+    $params = [':id_producto' => $codProd];
 
-    return operarBd($sql);
+    return operarBd($sql, $params);
   }
 
   function obtenerNombreProducto($codProd) {
     $sql = "SELECT nombre
             FROM producto
-            WHERE id_producto = '$codProd'";
+            WHERE id_producto = :id_producto";
+    $params = [':id_producto' => $codProd];
 
-    $resultado = operarBd($sql);
+    $resultado = operarBd($sql, $params);
 
     return $resultado[0]['nombre'];
 }

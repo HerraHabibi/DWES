@@ -9,6 +9,7 @@
   function selectCats() {
     $sql = "SELECT id_categoria, nombre
               FROM categoria";
+
     $resultado = operarBd($sql);
     
     echo "<select name='id_categoria'>";
@@ -48,6 +49,7 @@
     // Definir la query y ejecutarla
     $sql = "SELECT id_producto
               FROM producto";
+              
     $resultado = operarBd($sql);
 
     // Si no hay productos, devuelve P0000

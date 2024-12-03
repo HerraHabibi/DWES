@@ -2,6 +2,7 @@
   function selectProds() {
     $sql = "SELECT id_producto, nombre
               FROM producto";
+
     $resultado = operarBd($sql);
     
     echo "<select name='id_producto'>";
@@ -15,6 +16,7 @@
   function selectAlms() {
     $sql = "SELECT num_almacen, localidad
               FROM almacen";
+
     $resultado = operarBd($sql);
     
     echo "<select name='num_almacen'>";
@@ -55,13 +57,17 @@
   function aprovisionarProducto($codProd, $codAlm, $cantidad) {
     $sql = "SELECT cantidad
               FROM almacena
-              WHERE id_producto = '$codProd' AND num_almacen = '$codAlm'";
-    $resultado = operarBd($sql);
+              WHERE id_producto = :id_producto AND num_almacen = :num_almacen";
+    $params = [':id_producto' => $codProd, ':num_almacen' => $codAlm];
+
+    $resultado = operarBd($sql, $params);
 
     if (empty($resultado)) {
       $sql = "INSERT INTO almacena (id_producto, num_almacen, cantidad)
-                VALUES ('$codProd', '$codAlm', '$cantidad')";
-      $valido = operarBd($sql);
+                VALUES (:id_producto, :num_almacen, :cantidad)";
+      $params = [':id_producto' => $codProd, ':num_almacen' => $codAlm, ':cantidad' => $cantidad];
+                
+      $valido = operarBd($sql, $params);
 
       if ($valido)
         echo "Se aprovisionó el producto correctamente <br>";
@@ -69,9 +75,11 @@
       $cantidad += $resultado[0]['cantidad'];
 
       $sql = "UPDATE almacena
-                SET cantidad = '$cantidad'
-                WHERE id_producto = '$codProd' AND num_almacen = '$codAlm'";
-      $valido = operarBd($sql);
+                SET cantidad = :cantidad
+                WHERE id_producto = :id_producto AND num_almacen = :num_almacen";
+      $params = [':cantidad' => $cantidad, ':id_producto' => $codProd, ':num_almacen' => $codAlm];
+
+      $valido = operarBd($sql, $params);
 
       if ($valido)
         echo "Se aprovisionó el producto correctamente <br>";

@@ -10,6 +10,7 @@
     // Definir la query y ejecutarla
     $sql = "SELECT id_categoria
               FROM categoria";
+              
     $resultado = operarBd($sql);
 
     // Si no hay categorías, devuelve C-000

@@ -10,7 +10,7 @@
     <?php
       include '../handlerErrores.php';
       include '../conexionBd.php';
-      include 'fComaprpro.php';
+      include 'fComconsalm.php';
     ?>
 
     <nav>
@@ -25,33 +25,23 @@
     </nav>
 
     <div>
-      <b>Aprovisionar productos</b>
+      <b>Consulta de almacenes</b>
       <br><br>
     </div>
 
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
-      <b>Producto: </b><?php selectProds(); ?>
-      <br><br>
       <b>Almacén: </b><?php selectAlms(); ?>
-      <br><br> 
-      <b>Cantidad: </b><input type='number' name='cantidad' min='1' step='1'>
       <br><br>
-      <input type='submit' value='Aprovisionar'>
+      <input type='submit' value='Ver productos en almacén'>
     </form>
     
     <?php
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $codProd = isset($_POST['id_producto']) ? $_POST['id_producto'] : null;
         $codAlm = isset($_POST['num_almacen']) ? $_POST['num_almacen'] : null;
-        $cantidad = $_REQUEST['cantidad'];
 
-        limpiar($cantidad);
-
-        validarProd($codProd);
         validarAlm($codAlm);
-        validarCantidad($cantidad);
 
-        aprovisionarProducto($codProd, $codAlm, $cantidad);
+        verProductos($codAlm);
       }
     ?>
   </body>

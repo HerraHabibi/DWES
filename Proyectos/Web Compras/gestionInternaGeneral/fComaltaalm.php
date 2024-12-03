@@ -10,6 +10,7 @@
     // Definir la query y ejecutarla
     $sql = "SELECT num_almacen
               FROM almacen";
+              
     $resultado = operarBd($sql);
 
     // Si no hay almacenes, devuelve 0

@@ -21,6 +21,8 @@
       <a href='comaltaalm.php'>Alta almacenes</a>
       <a href='comaprpro.php'>Aprovisionar productos</a>
       <a href='comconstock.php'>Consulta stock</a>
+      <a href='comconsalm.php'>Consulta almacenes</a>
+      <a href='comconscom.php'>Consulta compras</a>
     </nav>
 
     <div>
