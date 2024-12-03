@@ -14,9 +14,9 @@
     
     echo "<select name='id_categoria'>";
     echo "<option value='' disabled selected>-- Seleccionar --</option>";
-    foreach ($resultado as $categoria) {
+    foreach ($resultado as $categoria)
       echo "<option value='" . $categoria['id_categoria'] . "'>" . $categoria['nombre'] . "</option>";
-    }
+
     echo "</select>";
   }
 

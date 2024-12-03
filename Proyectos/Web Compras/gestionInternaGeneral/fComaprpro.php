@@ -7,9 +7,9 @@
     
     echo "<select name='id_producto'>";
     echo "<option value='' disabled selected>-- Seleccionar --</option>";
-    foreach ($resultado as $producto) {
+    foreach ($resultado as $producto)
       echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre'] . "</option>";
-    }
+
     echo "</select>";
   }
   
@@ -21,9 +21,9 @@
     
     echo "<select name='num_almacen'>";
     echo "<option value='' disabled selected>-- Seleccionar --</option>";
-    foreach ($resultado as $almacen) {
+    foreach ($resultado as $almacen)
       echo "<option value='" . $almacen['num_almacen'] . "'>" . $almacen['localidad'] . "</option>";
-    }
+
     echo "</select>";
   }
 

@@ -7,9 +7,9 @@
     
     echo "<select name='id_producto'>";
     echo "<option value='' disabled selected>-- Seleccionar --</option>";
-    foreach ($resultado as $producto) {
+    foreach ($resultado as $producto)
       echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre'] . "</option>";
-    }
+
     echo "</select>";
   }
 
@@ -36,10 +36,10 @@
       echo "</tr>";
 
       foreach ($resultado as $almacena) {
-          echo "<tr>";
-          echo "<td>" . $almacena['localidad'] . "</td>";
-          echo "<td>" . $almacena['cantidad'] . "</td>";
-          echo "</tr>";
+        echo "<tr>";
+        echo "<td>" . $almacena['localidad'] . "</td>";
+        echo "<td>" . $almacena['cantidad'] . "</td>";
+        echo "</tr>";
       }
 
       echo "</table>";
