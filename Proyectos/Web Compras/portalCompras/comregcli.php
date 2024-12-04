@@ -18,12 +18,10 @@
       <a href='../gestionInternaClientes.html'>Atrás</a>
       <a href='comregcli.php'>Registro de clientes</a>
       <a href='comlogincli.php'>Login</a>
-      <a href='comprocli.php'>Compra de productos</a>
-      <a href='comconscli.php'>Consulta de compras</a>
     </nav>
 
     <div>
-      <b>Crear nuevo almacen</b>
+      <b>Registrarse</b>
       <br><br>
     </div>
 

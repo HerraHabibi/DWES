@@ -54,14 +54,14 @@
   }
 
   function generarClave($apellido) {
-    return password_hash(strrev(str_replace(' ', '', strtolower($apellido))), PASSWORD_DEFAULT);
+    return password_hash(strrev(str_replace(' ', '', strtolower($apellido))), PASSWORD_BCRYPT);
   }
 
   function registrarCliente($nif, $nombre, $apellido, $cp, $direccion, $ciudad, $usuario, $clave) {
     $valido = registrar($nif, $nombre, $apellido, $cp, $direccion, $ciudad, $usuario, $clave);
 
     if ($valido)
-      echo "Se registró el cliente con NIF $nif correctamente";
+      echo "Se registró el cliente con NIF $nif correctamente. Su usuario es $usuario y la clave es " . strrev(str_replace(' ', '', strtolower($apellido)));
   }
 
   function registrar($nif, $nombre, $apellido, $cp, $direccion, $ciudad, $usuario, $clave) {
