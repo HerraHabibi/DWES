@@ -15,7 +15,7 @@
     ?>
 
     <nav>
-      <a href='index.html'>Atrás</a>
+      <a href='../index.html'>Atrás</a>
       <a href='comprocli.php'>Compra de productos</a>
       <a href='comconscli.php'>Consulta de compras</a>
       <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>

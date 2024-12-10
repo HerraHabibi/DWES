@@ -29,6 +29,32 @@
       trigger_error('Las unidades tienen que ser mínimo 1', E_USER_WARNING);
   }
 
+  function crearCookieCarrito($codProd, $unidades) {
+    $carrito = array();
+
+    $carrito = obtenerCarrito();
+    
+    $nuevoProducto = [$codProd, $unidades];
+    $carrito[] = $nuevoProducto;
+
+    var_dump($carrito);
+    
+    // Serializar el carrito
+    $carritoSerializado = serialize($carrito);
+    
+    // Crear o actualizar la cookie con duración de 7 días
+    setcookie('carrito', $carritoSerializado, time() + (7 * 24 * 60 * 60), "/");
+  }
+
+  function obtenerCarrito() {
+    if (isset($_COOKIE['carrito']))
+      $carrito = unserialize($_COOKIE['carrito']);
+    else
+      $carrito = array();
+
+    return $carrito;
+  }
+
   function buscarNif($usuario) {
     $sql = "SELECT nif
               FROM cliente
