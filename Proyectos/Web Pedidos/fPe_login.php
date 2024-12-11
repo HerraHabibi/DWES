@@ -85,6 +85,7 @@
     session_destroy();
   }
 
+  // Redirecciona a la página pasada por parámetros
   function redireccionar($pagina) {
     header('Location: ' . $pagina);
     exit;
