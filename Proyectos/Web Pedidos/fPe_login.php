@@ -36,7 +36,6 @@
     // Si el usuario tiene intentos fallidos los elimina
     if (isset($intentos[$usuario])) {
       unset($intentos[$usuario]);
-      var_dump($intentos);
       // Convierte el array en cookie y la almacena
       setcookie('intentos', serialize($intentos), time() + 60, '/');
     }
@@ -45,14 +44,13 @@
     session_start();
     
     $_SESSION['usuario'] = $usuario;
-    $_SESSION['clave'] = $clave;
   }
 
   // Busca si existe un usuario igual al introducido y devuelve: el nombre de usuario, el apellido (clave de los usuarios ya creados) y la clave encriptada
   function buscarUsuario($usuario) {
-    $sql = "SELECT CustomerNumber, ContactLastName, claveEncriptada
-              FROM Customers
-              WHERE CustomerNumber = :usuario";
+    $sql = "SELECT customerNumber, contactLastName, claveEncriptada
+              FROM customers
+              WHERE customerNumber = :usuario";
     $args = [':usuario' => $usuario];
     
     return operarBd($sql, $args);
@@ -61,9 +59,9 @@
   // Comprueba la contraseña del usuario introducido
   function comprobarLogin($cliente, $usuario, $clave, $intentos) {
         // Comprueba si la contraseña que utiliza es una clave no encriptada y si no es correcta da error
-    if (($cliente[0]['claveEncriptada'] == null && $clave != $cliente[0]['ContactLastName']) ||
+    if (($cliente[0]['claveEncriptada'] == null && $clave != $cliente[0]['contactLastName']) ||
         // Comprueba si la contraseña que utiliza es una clave encriptada y si no es correcta da error
-        ($cliente[0]['claveEncriptada'] != null && $clave != $cliente[0]['claveEncriptada'])) {
+        ($cliente[0]['claveEncriptada'] != null && !password_verify($clave,$cliente[0]['claveEncriptada']))) {
           
           // Si el usuario ya tiene intentos previos se le incrementa en 1, sino se le asigna 1
           $intentos[$usuario] = isset($intentos[$usuario]) ? $intentos[$usuario] + 1 : 1;

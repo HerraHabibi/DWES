@@ -32,7 +32,7 @@
           <b>Contraseña: </b><input type='text' name='clave'>
           <br><br>
           <button type='submit' name='action' value='iniciarSesion'>Iniciar sesión</button>
-          <br><br>
+          <button type='submit' name='action' value='registro'>Ir al registro</button>
         </form>
     <?php
       }
@@ -49,6 +49,10 @@
 
           login($usuario, $clave);
           redireccionar('pe_inicio.php');
+        }
+
+        if (isset($_POST['action']) && $_POST['action'] === 'registro') {
+          redireccionar('pe_registro.php');
         }
       }
     ?>

@@ -23,6 +23,10 @@
         redireccionar('pe_login.php');
 
       } else {
+        if (isset($_COOKIE['usuario']))
+          setcookie('usuario', '', time() - 3600, '/');
+        if (isset($_COOKIE['clave']))
+          setcookie('clave', '', time() - 3600, '/');
     ?>
         <h1>Inicio</h1>
         <h2>¡Hola <?php echo $_SESSION['usuario']; ?>!</h2>
