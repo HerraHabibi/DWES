@@ -33,6 +33,11 @@
     /* Usuario correcto */
     /* ---------------- */
 
+    // Si el usuario no tiene la contraseña encriptada guardada, la almacena
+    if (empty($cliente[0]['claveEncriptada'])) {
+      almacenarClaveEncriptada($usuario, $clave);
+    }
+
     // Si el usuario tiene intentos fallidos los elimina
     if (isset($intentos[$usuario])) {
       unset($intentos[$usuario]);
@@ -71,6 +76,15 @@
 
           trigger_error('Login inválido', E_USER_WARNING);
     }
+  }
+
+  function almacenarClaveEncriptada($usuario, $clave) {
+    $sql = "UPDATE customers
+              SET claveEncriptada = :claveEncriptada
+              WHERE customerNumber = :usuario";
+    $args = [':claveEncriptada' => password_hash($clave, PASSWORD_DEFAULT), ':usuario' => $usuario];
+
+    operarBd($sql, $args);
   }
 
   // Borra la sesión y recarga la página

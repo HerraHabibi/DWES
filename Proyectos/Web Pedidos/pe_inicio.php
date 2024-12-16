@@ -34,6 +34,9 @@
         <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
           <button type='submit' name='action' value='cerrarSesion'>Cerrar sesión</button>
         </form>
+        <ul>
+          <li><a href='pe_altaped.php'>Hacer pedido</a></li>
+        </ul>
     <?php
       }
     ?>
