@@ -30,11 +30,6 @@
     return operarBd($sql);
   }
 
-  // Devuelve el customerNumber del nuevo customer
-  function calcularNuevoCustomerNumber($ultCustomer) {
-    return intval($ultCustomer) + 1;
-  }
-
   // Crea una cookie temporal con el usuario para poder iniciar sesión de una forma rápida
   function crearCookiesLogin($nuevoCustomerNumber) {
     setcookie('usuario', $nuevoCustomerNumber, time() + 60, '/');

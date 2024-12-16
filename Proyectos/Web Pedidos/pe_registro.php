@@ -47,8 +47,7 @@
           limpiar($nombre);
           limpiar($clave);
 
-          $ultCustomer = buscarUltimoCustomer();
-          $nuevoCustomerNumber = calcularNuevoCustomerNumber($ultCustomer);
+          $nuevoCustomerNumber = intval(buscarUltimoCustomer()) + 1;
 
           $valido = registrar($nuevoCustomerNumber, $nombre, $clave);
           
