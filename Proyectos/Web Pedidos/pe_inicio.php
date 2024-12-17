@@ -40,6 +40,7 @@
           <li><a href='pe_consprodstock.php'>Consultar stock de un producto</a></li>
           <li><a href='pe_constock.php'>Consultar stock de una línea de productos</a></li>
           <li><a href='pe_topprod.php'>Consultar unidades compradas de cada producto entre dos fechas</a></li>
+          <li><a href='pe_conspago.php'>Consultar pagos de un cliente entre dos fechas</a></li>
         </ol>
     <?php
       }
