@@ -47,26 +47,16 @@
           limpiar($nombre);
           limpiar($clave);
 
+          verificarInputs($nombre, $clave);
+
           $nuevoCustomerNumber = intval(buscarUltimoCustomer()) + 1;
 
           $valido = registrar($nuevoCustomerNumber, $nombre, $clave);
           
           if ($valido) {
-            crearCookiesLogin($nuevoCustomerNumber);
             echo "<h3>Bienvenid@ $nombre</h3>";
             echo "Tu usuario es: $nuevoCustomerNumber";
-
-            ?>
-              <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
-                <button type='submit' name='action' value='login'>Iniciar sesión</button>
-              </form>
-            <?php
           }
-        }
-        
-        if (isset($_POST['action']) && $_POST['action'] === 'login') {
-          login($_COOKIE['usuario']);
-          redireccionar('pe_inicio.php');
         }
 
         if (isset($_POST['action']) && $_POST['action'] === 'inicioSesion') {

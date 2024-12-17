@@ -6,6 +6,12 @@
     $value = htmlspecialchars($value);
   }
 
+  // Verifica que los inputs no esten vacios
+  function verificarInputs($nombre, $clave) {
+    if ($nombre == '' || $clave == '')
+      trigger_error('Debes rellenar todos los campos', E_USER_WARNING);
+  }
+
   // Busca el código del último costumer registrado y lo devuelve y sino devuelve 0
   function buscarUltimoCustomer() {
     $resultado = consultarCustomerNumbers();
@@ -28,18 +34,6 @@
               LIMIT 1";
               
     return operarBd($sql);
-  }
-
-  // Crea una cookie temporal con el usuario para poder iniciar sesión de una forma rápida
-  function crearCookiesLogin($nuevoCustomerNumber) {
-    setcookie('usuario', $nuevoCustomerNumber, time() + 60, '/');
-  }
-
-  // Iniciar sesión
-  function login($usuario) {
-    session_start();
-    
-    $_SESSION['usuario'] = $usuario;
   }
 
   // Registra un nuevo customer con la clave encriptada

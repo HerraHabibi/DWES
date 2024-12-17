@@ -6,14 +6,13 @@
     $value = htmlspecialchars($value);
   }
 
-
   function obtenerNombreCliente() {
     $cliente = consultarNombreCliente();
-    echo $cliente['contactFirstName'] . ' ' . $cliente['contactLastName'];
+    echo $cliente['contactFirstName'];
   }
 
   function consultarNombreCliente() {
-    $sql = "SELECT contactFirstName, contactLastName
+    $sql = "SELECT contactFirstName
             FROM customers
             WHERE customerNumber = :customerNumber";
     $args = [':customerNumber' => $_SESSION['usuario']];

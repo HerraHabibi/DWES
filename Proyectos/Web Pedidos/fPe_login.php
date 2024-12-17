@@ -24,7 +24,7 @@
     
     // Si el usuario no existe da error
     if (empty($cliente))
-      trigger_error('El usuario no existe', E_USER_WARNING);
+      trigger_error('Login inválido', E_USER_WARNING);
 
     // Comprueba la contraseña
     comprobarLogin($cliente, $usuario, $clave, $intentos);
