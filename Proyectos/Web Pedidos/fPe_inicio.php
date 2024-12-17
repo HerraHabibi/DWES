@@ -9,7 +9,7 @@
 
   function obtenerNombreCliente() {
     $cliente = consultarNombreCliente();
-    echo $cliente[0]['contactFirstName'] . ' ' . $cliente[0]['contactLastName'];
+    echo $cliente['contactFirstName'] . ' ' . $cliente['contactLastName'];
   }
 
   function consultarNombreCliente() {
@@ -18,7 +18,7 @@
             WHERE customerNumber = :customerNumber";
     $args = [':customerNumber' => $_SESSION['usuario']];
 
-    return operarBd($sql, $args);
+    return operarBd($sql, $args)[0];
   }
 
   // Borra la sesión y recarga la página
