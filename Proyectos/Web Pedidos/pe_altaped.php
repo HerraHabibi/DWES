@@ -31,7 +31,7 @@
     <h1>Hacer pedido como <?php echo $_SESSION['usuario']; ?></h1>
 
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
-      <b>Producto: </b><?php selectProds(); ?>
+      <b>Producto: </b><?php selectProdsConStock(); ?>
       <br><br>
       <b>Cantidad: </b><input type='number' name='cantidad' min='1' step='1'>
       <br><br>
