@@ -33,9 +33,9 @@
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
       <b>Cliente: </b><?php selectCustomers(); ?>
       <br><br>
-      <b>Desde: </b><input type='date' name='desde' id='desde' />
+      <b>Desde (opcional): </b><input type='date' name='desde' id='desde' />
       <br><br>
-      <b>Hasta: </b><input type='date' name='hasta' id='hasta' />
+      <b>Hasta (opcional): </b><input type='date' name='hasta' id='hasta' />
       <br><br>
       <button type='submit' name='action' value='consultarPagos'>Consultar pagos</button>
     </form>

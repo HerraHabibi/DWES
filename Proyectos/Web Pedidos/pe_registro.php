@@ -54,7 +54,7 @@
           if ($valido) {
             crearCookiesLogin($nuevoCustomerNumber);
             echo "<h3>Bienvenid@ $nombre</h3>";
-            echo "Tu usuario es: $nuevoCustomerNumber y tu clave es: $clave";
+            echo "Tu usuario es: $nuevoCustomerNumber";
 
             ?>
               <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
