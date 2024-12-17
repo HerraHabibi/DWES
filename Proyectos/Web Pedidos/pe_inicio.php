@@ -34,9 +34,13 @@
         <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
           <button type='submit' name='action' value='cerrarSesion'>Cerrar sesión</button>
         </form>
-        <ul>
+        <ol start='2'>
           <li><a href='pe_altaped.php'>Hacer pedido</a></li>
-        </ul>
+          <li><a href='pe_consped.php'>Consultar la información de los pedidos de un cliente</a></li>
+          <li><a href='pe_consprodstock.php'>Consultar stock de un producto</a></li>
+          <li><a href='pe_constock.php'>Consultar stock de una línea de productos</a></li>
+          <li><a href='pe_topprod.php'>Consultar unidades compradas de cada producto entre dos fechas</a></li>
+        </ol>
     <?php
       }
     ?>

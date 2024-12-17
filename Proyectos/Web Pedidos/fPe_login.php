@@ -11,7 +11,7 @@
     // Convierte la cookie de intentos en array asociativo, si no existe crea un array vacío
     $intentos = isset($_COOKIE['intentos']) ? unserialize($_COOKIE['intentos']) : array();
 
-    // Si el usuario ha intentado 3 veces o da error
+    // Si el cliente ha intentado 3 veces o da error
     if (isset($intentos[$usuario]) && $intentos[$usuario] >= 3)
       trigger_error('Has excedido el número de intentos', E_USER_WARNING);
 
@@ -30,28 +30,28 @@
     comprobarLogin($cliente, $usuario, $clave, $intentos);
     
     /* ---------------- */
-    /* Usuario correcto */
+    /* Cliente correcto */
     /* ---------------- */
 
-    // Si el usuario no tiene la contraseña encriptada guardada, la almacena
+    // Si el cliente no tiene la contraseña encriptada guardada, la almacena
     if (empty($cliente[0]['claveEncriptada'])) {
       almacenarClaveEncriptada($usuario, $clave);
     }
 
-    // Si el usuario tiene intentos fallidos los elimina
+    // Si el cliente tiene intentos fallidos los elimina
     if (isset($intentos[$usuario])) {
       unset($intentos[$usuario]);
       // Convierte el array en cookie y la almacena
       setcookie('intentos', serialize($intentos), time() + 60, '/');
     }
 
-    // Inicia la sesión del usuario
+    // Inicia la sesión del cliente
     session_start();
     
     $_SESSION['usuario'] = $usuario;
   }
 
-  // Busca si existe un usuario igual al introducido y devuelve: el nombre de usuario, el apellido (clave de los usuarios ya creados) y la clave encriptada
+  // Busca si existe un usuario igual al introducido y devuelve: el usuario, el apellido (clave de los clientes ya creados) y la clave encriptada
   function buscarUsuario($usuario) {
     $sql = "SELECT customerNumber, contactLastName, claveEncriptada
               FROM customers
@@ -68,7 +68,7 @@
         // Comprueba si la contraseña que utiliza es una clave encriptada y si no es correcta da error
         ($cliente[0]['claveEncriptada'] != null && !password_verify($clave,$cliente[0]['claveEncriptada']))) {
           
-          // Si el usuario ya tiene intentos previos se le incrementa en 1, sino se le asigna 1
+          // Si el cliente ya tiene intentos previos se le incrementa en 1, sino se le asigna 1
           $intentos[$usuario] = isset($intentos[$usuario]) ? $intentos[$usuario] + 1 : 1;
           var_dump($intentos);
           // Convierte el array en cookie y la almacena
