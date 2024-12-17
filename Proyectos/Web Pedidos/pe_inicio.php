@@ -29,7 +29,7 @@
           setcookie('clave', '', time() - 3600, '/');
     ?>
         <h1>Inicio</h1>
-        <h2>¡Hola <?php echo $_SESSION['usuario']; ?>!</h2>
+        <h2>¡Hola <?php echo obtenerNombreCliente(); ?>!</h2>
 
         <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
           <button type='submit' name='action' value='cerrarSesion'>Cerrar sesión</button>

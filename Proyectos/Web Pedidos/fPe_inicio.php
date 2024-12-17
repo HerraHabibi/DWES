@@ -6,6 +6,21 @@
     $value = htmlspecialchars($value);
   }
 
+
+  function obtenerNombreCliente() {
+    $cliente = consultarNombreCliente();
+    echo $cliente[0]['contactFirstName'] . ' ' . $cliente[0]['contactLastName'];
+  }
+
+  function consultarNombreCliente() {
+    $sql = "SELECT contactFirstName, contactLastName
+            FROM customers
+            WHERE customerNumber = :customerNumber";
+    $args = [':customerNumber' => $_SESSION['usuario']];
+
+    return operarBd($sql, $args);
+  }
+
   // Borra la sesión y recarga la página
   function logout() {
     // Elimina la cookie asociada a la sesión
