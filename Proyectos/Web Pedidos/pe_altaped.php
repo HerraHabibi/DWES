@@ -11,7 +11,7 @@
   }
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
+    if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
       $prod = isset($_POST['productCode']) ? $_POST['productCode'] : null;
       $cantidad = $_POST['cantidad'];
       
@@ -19,12 +19,14 @@
       limpiar($cantidad);
 
       verificarProd($prod);
-      verificarCant($cantidad);
-
-      $cantidad = intval($cantidad);
+      $cantidad = verificarCant($cantidad);
 
       comprobarStock($prod, $cantidad);
       crearCarrito($prod, $cantidad);
+    }
+
+    if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
+      eliminarCarrito();
     }
   }
 ?>
@@ -42,14 +44,30 @@
       <li><a href='pe_inicio.php'>Volver al inicio</a></li>
     </ul>
 
-    <h1>Hacer pedido como <?php echo $_SESSION['usuario']; ?></h1>
+    <h1>Hacer pedido como <?php echo obtenerNombreCliente(); ?></h1>
 
     <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
       <b>Producto: </b><?php selectProdsConStock(); ?>
       <br><br>
       <b>Cantidad: </b><input type='number' name='cantidad' min='1' step='1'>
       <br><br>
+      <button type='submit' name='action' value='anadirCarrito'>Añadir al carrito</button>
+      <button type='submit' name='action' value='verCarrito'>Ver carrito</button>
       <button type='submit' name='action' value='hacerPedido'>Hacer pedido</button>
     </form>
+
+    <?php
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['action']) && $_POST['action'] === 'verCarrito') {
+          mostrarCarrito();
+        }
+
+        if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
+          $producto = obtenerNombreProducto($prod);
+          echo "Se agregaron $producto <b>($cantidad)</b> al carrito";
+        }
+      }
+    ?>
+
   </body>
 </html>

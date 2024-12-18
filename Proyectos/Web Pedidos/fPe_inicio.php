@@ -8,7 +8,7 @@
 
   function obtenerNombreCliente() {
     $cliente = consultarNombreCliente();
-    echo $cliente['contactFirstName'];
+    return $cliente['contactFirstName'];
   }
 
   function consultarNombreCliente() {

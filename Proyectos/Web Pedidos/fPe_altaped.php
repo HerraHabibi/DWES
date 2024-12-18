@@ -1,4 +1,24 @@
 <?php
+  // Obtener el nombre del cliente actual
+  function obtenerNombreCliente() {
+    $sql = "SELECT contactFirstName
+            FROM customers
+            WHERE customerNumber = :customerNumber";
+    $args = [':customerNumber' => $_SESSION['usuario']];
+
+    return operarBd($sql, $args)[0]['contactFirstName'];
+  }
+
+  // Obtener el nombre de un producto pasándole su código por parámetros
+  function obtenerNombreProducto($prod) {
+    $sql = "SELECT productName
+            FROM products
+            WHERE productCode = :productCode";
+    $args = [':productCode' => $prod];
+
+    return operarBd($sql, $args)[0]['productName'];
+  }
+
   // Crear una select con los productos que tienen stock
   function selectProdsConStock() {
     $res = consultarProdsConStock();
@@ -46,6 +66,8 @@
 
     if ($cantidad < 1)
       trigger_error('La cantidad debe ser mínimo 1', E_USER_WARNING);
+
+    return intval($cantidad);
   }
 
   // Verificar que haya stock suficiente
@@ -77,9 +99,8 @@
     $carrito = isset($_COOKIE['carrito']) ? unserialize($_COOKIE['carrito']) : array();
     
     // Creamos el carrito del cliente si es que no existe
-    if (!isset($carrito[$_SESSION['usuario']])) {
+    if (!isset($carrito[$_SESSION['usuario']]))
       $carrito[$_SESSION['usuario']] = array();
-    }
 
     // Si el cliente ya tenía el producto en el carrito, suma la cantidad, sino lo agrega con la cantidad.
     if (isset($carrito[$_SESSION['usuario']][$prod]))
@@ -89,6 +110,45 @@
 
     // Pasar el array del carrito a cookie
     setcookie('carrito', serialize($carrito), time() + (10 * 365 * 24 * 60 * 60), '/');
+  }
+
+  // Mostrar en una tabla el carrito del cliente
+  function mostrarCarrito() {
+    $carrito = isset($_COOKIE['carrito']) ? unserialize($_COOKIE['carrito']) : array();
+
+    if (isset($carrito[$_SESSION['usuario']]))
+      crearTablaCarrito($carrito[$_SESSION['usuario']]);
+    else
+      echo 'No tienes productos en el carrito';
+  }
+
+  // Creación de la tabla del carrito del usuario
+  function crearTablaCarrito($carritoCliente) {
+    echo "<table border='1' style='border-collapse: collapse; width: 50%; text-align: left;'>";
+    echo '<tr>';
+    echo '<th>Producto</th>';
+    echo '<th>Cantidad</th>';
+    echo '</tr>';
+    foreach ($carritoCliente as $prod => $cantidad) {
+      echo '<tr>';
+      echo '<td>' . obtenerNombreProducto($prod) . '</td>';
+      echo "<td>$cantidad</td>";
+      echo '</tr>';
+    }    
+    echo '</table>';
+  }
+
+  // Eliminar el carrito del cliente
+  function eliminarCarrito() {
+    $carrito = isset($_COOKIE['carrito']) ? unserialize($_COOKIE['carrito']) : array();
+
+    if (isset($carrito[$_SESSION['usuario']])) {
+      unset($carrito[$_SESSION['usuario']]);
+      if (!empty($carrito))
+        setcookie('carrito', serialize($carrito), time() + (10 * 365 * 24 * 60 * 60), '/');
+      else
+        setcookie('carrito', '', time() - 3600, '/');
+    }
   }
 
   // Borra la sesión y recarga la página
