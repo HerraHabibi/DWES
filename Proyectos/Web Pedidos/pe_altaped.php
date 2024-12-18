@@ -12,17 +12,17 @@
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
-      $prod = isset($_POST['productCode']) ? $_POST['productCode'] : null;
+      $prod = isset($_POST['productCode']) ? $_POST['productCode'] : '';
       $cantidad = $_POST['cantidad'];
       
       limpiar($prod);
       limpiar($cantidad);
 
-      verificarProd($prod);
-      $cantidad = verificarCant($cantidad);
-
-      comprobarStock($prod, $cantidad);
-      crearCarrito($prod, $cantidad);
+      // Ejecución del código sin mostrar errores
+      if ($prod != '' && $cantidad != '') {
+        comprobarStock($prod, $cantidad);
+        crearCarrito($prod, $cantidad);
+      }
     }
 
     if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
@@ -58,13 +58,18 @@
 
     <?php
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['action']) && $_POST['action'] === 'verCarrito') {
-          mostrarCarrito();
-        }
-
         if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
+          //Mostrar errores
+          verificarProd($prod);
+          $cantidad = verificarCant($cantidad);
+
+          // Mostrar producto agregado
           $producto = obtenerNombreProducto($prod);
           echo "Se agregaron $producto <b>($cantidad)</b> al carrito";
+        }
+
+        if (isset($_POST['action']) && $_POST['action'] === 'verCarrito') {
+          mostrarCarrito();
         }
       }
     ?>

@@ -38,7 +38,7 @@
     $carrito[] = $nuevoProducto;
 
     var_dump($carrito);
-    
+    echo $codProd;
     // Serializar el carrito
     $carritoSerializado = serialize($carrito);
     

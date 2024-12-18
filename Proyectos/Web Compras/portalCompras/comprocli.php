@@ -10,8 +10,41 @@
     exit();
   }
   include '../handlerErrores.php';
-?>
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
+          $nif = isset($_POST['nif']) ? $_POST['nif'] : null;
+          $codProd = isset($_POST['id_producto']) ? $_POST['id_producto'] : null;
+          $unidades = $_POST['unidades'];
 
+          limpiar($unidades);
+
+          validarProd($codProd);
+          validarUnidades($unidades);
+
+          crearCookieCarrito($codProd, $unidades);
+        }
+
+        if (isset($_POST['action']) && $_POST['action'] === 'pagarCarrito') {
+          $carrito = obtenerCarrito();
+
+          if (empty($carrito))
+            trigger_error('No tienes productos en el carrito', E_USER_WARNING);
+
+          foreach($carrito as $producto) {
+            $codProd = $producto[0];
+            $unidades = $producto[1];
+          
+            $valido = disponibilidadStock($codProd, $unidades);
+
+            if ($valido) {
+              $nif = buscarNif($_SESSION['usuario']);
+              realizarCompra($nif, $codProd, $unidades);
+              actualizarStock($codProd, $unidades);
+            }
+          }
+        }
+      }
+    ?>
 <!DOCTYPE html>
 <html>
   <head> 
@@ -50,41 +83,5 @@
       <button type='submit' name='action' value='pagarCarrito'>Pagar carrito</button>
     </form>
     
-    <?php
-      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
-          $nif = isset($_POST['nif']) ? $_POST['nif'] : null;
-          $codProd = isset($_POST['id_producto']) ? $_POST['id_producto'] : null;
-          $unidades = $_POST['unidades'];
-
-          limpiar($unidades);
-
-          validarProd($codProd);
-          validarUnidades($unidades);
-
-          crearCookieCarrito($codProd, $unidades);
-        }
-
-        if (isset($_POST['action']) && $_POST['action'] === 'pagarCarrito') {
-          $carrito = obtenerCarrito();
-
-          if (empty($carrito))
-            trigger_error('No tienes productos en el carrito', E_USER_WARNING);
-
-          foreach($carrito as $producto) {
-            $codProd = $producto[0];
-            $unidades = $producto[1];
-          
-            $valido = disponibilidadStock($codProd, $unidades);
-
-            if ($valido) {
-              $nif = buscarNif($_SESSION['usuario']);
-              realizarCompra($nif, $codProd, $unidades);
-              actualizarStock($codProd, $unidades);
-            }
-          }
-        }
-      }
-    ?>
   </body>
 </html>
