@@ -28,6 +28,10 @@
     if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
       eliminarCarrito();
     }
+
+    if (isset($_POST['action']) && $_POST['action'] === 'borrarCarrito') {
+      eliminarCarrito();
+    }
   }
 ?>
 
@@ -54,6 +58,7 @@
       <button type='submit' name='action' value='anadirCarrito'>Añadir al carrito</button>
       <button type='submit' name='action' value='verCarrito'>Ver carrito</button>
       <button type='submit' name='action' value='hacerPedido'>Hacer pedido</button>
+      <button type='submit' name='action' value='borrarCarrito'>Borrar carrito</button>
     </form>
 
     <?php
@@ -70,6 +75,10 @@
 
         if (isset($_POST['action']) && $_POST['action'] === 'verCarrito') {
           mostrarCarrito();
+        }
+
+        if (isset($_POST['action']) && $_POST['action'] === 'borrarCarrito') {
+          echo "Se eliminó tu carrito";
         }
       }
     ?>
