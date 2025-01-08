@@ -26,7 +26,39 @@
     }
 
     if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
-      eliminarCarrito();
+      $carrito = isset($_COOKIE['carrito']) ? unserialize($_COOKIE['carrito']) : array();
+      $carrito = isset($carrito[$_SESSION['usuario']]) ? $carrito[$_SESSION['usuario']] : array();
+      
+      if (empty($carrito))
+        trigger_error('No tienes productos en el carrito', E_USER_WARNING);
+
+      $productosNoDisponibles = array();
+      $productosDisponibles = array();
+
+      foreach ($carrito as $numProd => $cantProd) {
+        $valido = comprobarStock($numProd, $cantProd);
+
+        if ($valido)
+          array_push($productosDisponibles, [$numProd => $cantProd]);
+        else
+          array_push($productosNoDisponibles, $numProd);
+      }
+
+      foreach ($productosDisponibles as $productoDisponible)
+        foreach ($productoDisponible as $numProdDisponible => $cantProdDisponible)
+          actualizarStock($numProdDisponible, $cantProdDisponible);
+
+      hacerPedido($carrito);
+
+      if (!empty($productosNoDisponibles)) {
+        echo "Productos sin stock: " . implode(', ', $productosNoDisponibles);
+        $pedidoValido = false;
+      }
+      else {
+        echo "Pago realizado con éxito.";
+        eliminarCarrito();
+        $pedidoValido = true;
+      }
     }
 
     if (isset($_POST['action']) && $_POST['action'] === 'borrarCarrito') {
@@ -75,6 +107,11 @@
 
         if (isset($_POST['action']) && $_POST['action'] === 'verCarrito') {
           mostrarCarrito();
+        }
+
+        if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
+          if ($pedidoValido)
+            pasarelaPago(); // TODO
         }
 
         if (isset($_POST['action']) && $_POST['action'] === 'borrarCarrito') {
