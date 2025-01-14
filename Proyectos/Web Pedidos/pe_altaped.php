@@ -3,6 +3,7 @@
 
   include 'utils/handlerErrores.php';
   include 'utils/conexionBd.php';
+  include 'utils/apiRedsys.php';
   include 'fPe_altaped.php';
 
   if(!isset($_SESSION['usuario'])) {
@@ -14,50 +15,50 @@
     if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
       $prod = isset($_POST['productCode']) ? $_POST['productCode'] : '';
       $cantidad = $_POST['cantidad'];
+      $hayStock = false;
       
       limpiar($prod);
       limpiar($cantidad);
 
-      // Ejecución del código sin mostrar errores
-      if ($prod != '' && $cantidad != '') {
-        comprobarStock($prod, $cantidad);
-        crearCarrito($prod, $cantidad);
+      $productoSeleccionado = verificarProd($prod);
+      $cantidad = verificarCant($cantidad);
+
+      if ($productoSeleccionado && is_int($cantidad)) {
+        $hayStock = comprobarStock($prod, $cantidad);
+        if ($hayStock)
+          crearCarrito($prod, $cantidad);
       }
     }
 
     if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
+      $tarjeta = $_POST['tarjeta'];
       $carrito = isset($_COOKIE['carrito']) ? unserialize($_COOKIE['carrito']) : array();
       $carrito = isset($carrito[$_SESSION['usuario']]) ? $carrito[$_SESSION['usuario']] : array();
-      
-      if (empty($carrito))
-        trigger_error('No tienes productos en el carrito', E_USER_WARNING);
 
-      $productosNoDisponibles = array();
-      $productosDisponibles = array();
+      limpiar($tarjeta);
 
-      foreach ($carrito as $numProd => $cantProd) {
-        $valido = comprobarStock($numProd, $cantProd);
+      $tarjetaValida = comprobarTarjeta($tarjeta);
 
-        if ($valido)
-          array_push($productosDisponibles, [$numProd => $cantProd]);
-        else
-          array_push($productosNoDisponibles, $numProd);
-      }
+      if ($tarjetaValida) {
+        if (!empty($carrito)) {
+          $productosNoDisponibles = array();
 
-      foreach ($productosDisponibles as $productoDisponible)
-        foreach ($productoDisponible as $numProdDisponible => $cantProdDisponible)
-          actualizarStock($numProdDisponible, $cantProdDisponible);
+          foreach ($carrito as $numProd => $cantProd) {
+            $valido = comprobarStock($numProd, $cantProd);
 
-      hacerPedido($carrito);
+            if (!$valido)
+              array_push($productosNoDisponibles, $numProd);
+          }
 
-      if (!empty($productosNoDisponibles)) {
-        echo "Productos sin stock: " . implode(', ', $productosNoDisponibles);
-        $pedidoValido = false;
-      }
-      else {
-        echo "Pago realizado con éxito.";
-        eliminarCarrito();
-        $pedidoValido = true;
+          if (empty($productosNoDisponibles)) {
+            $precioTotal = calcularPrecioTotal($carrito);
+
+            $_SESSION['precioTotal'] = $precioTotal;
+            $_SESSION['tarjeta'] = $tarjeta;
+
+            pasarelaPago($precioTotal);
+          }
+        }
       }
     }
 
@@ -87,6 +88,8 @@
       <br><br>
       <b>Cantidad: </b><input type='number' name='cantidad' min='1' step='1'>
       <br><br>
+      <b>Tarjeta: </b><input type='text' name='tarjeta' min='1' step='1'>
+      <br><br>
       <button type='submit' name='action' value='anadirCarrito'>Añadir al carrito</button>
       <button type='submit' name='action' value='verCarrito'>Ver carrito</button>
       <button type='submit' name='action' value='hacerPedido'>Hacer pedido</button>
@@ -96,11 +99,15 @@
     <?php
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['action']) && $_POST['action'] === 'anadirCarrito') {
-          //Mostrar errores
-          verificarProd($prod);
-          $cantidad = verificarCant($cantidad);
+          if (!$productoSeleccionado)
+            trigger_error('Debes seleccionar un producto', E_USER_WARNING);
 
-          // Mostrar producto agregado
+          if (!is_int($cantidad))
+            trigger_error($cantidad, E_USER_WARNING);
+
+          if (!$hayStock)
+            trigger_error('No hay stock suficiente', E_USER_WARNING);
+
           $producto = obtenerNombreProducto($prod);
           echo "Se agregaron $producto <b>($cantidad)</b> al carrito";
         }
@@ -110,8 +117,14 @@
         }
 
         if (isset($_POST['action']) && $_POST['action'] === 'hacerPedido') {
-          if ($pedidoValido)
-            pasarelaPago(); // TODO
+          if (!$tarjetaValida)
+            trigger_error('La tarjeta es inválida', E_USER_WARNING);
+
+          if (empty($carrito))
+            trigger_error('No tienes productos en el carrito', E_USER_WARNING);
+
+          if (!empty($productosNoDisponibles))
+            trigger_error('Productos sin stock: ' . implode(', ', $productosNoDisponibles), E_USER_WARNING);
         }
 
         if (isset($_POST['action']) && $_POST['action'] === 'borrarCarrito') {

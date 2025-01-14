@@ -50,22 +50,24 @@
   // Verificar que se haya seleccionado un producto
   function verificarProd($prod) {
     if ($prod == '')
-      trigger_error('Debes seleccionar un producto', E_USER_WARNING);
+      return false;
+    else
+      return true;
   }
 
   // Verificar que se haya establecido una cantidad válida
   function verificarCant($cant) {
     if ($cant == '')
-      trigger_error('Debes establecer una cantidad', E_USER_WARNING);
+      return 'Debes establecer una cantidad';
 
     if (!is_numeric($cant))
-      trigger_error('La cantidad debe ser un número', E_USER_WARNING);
+      return 'La cantidad debe ser un número';
 
     if (intval($cant) != $cant)
-      trigger_error('La cantidad debe ser un número entero', E_USER_WARNING);
+      return 'La cantidad debe ser un número entero';
 
     if ($cant < 1)
-      trigger_error('La cantidad debe ser mínimo 1', E_USER_WARNING);
+      return 'La cantidad debe ser mínimo 1';
 
     return intval($cant);
   }
@@ -79,10 +81,7 @@
     else
       $stock = $res[0]['quantityInStock'];
 
-    if ($stock < $cant)
-      trigger_error('No hay suficiente stock', E_USER_WARNING);
-    
-    return true;
+    return $stock >= $cant;
   }
 
   // Obtener el stock de un producto
@@ -153,7 +152,7 @@
     }
   }
 
-  function hacerPedido($carrito){
+  function hacerPedido($carrito) {
     // Generamos el numero de orden
     $sql = "SELECT orderNumber FROM orders ORDER BY orderNumber DESC LIMIT 1";
     $numOrden = operarBd($sql);
@@ -166,25 +165,41 @@
     // Insertamos el pedido
     $sql = "INSERT INTO orders (orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber) 
             VALUES (:orderNumber, CURDATE(), CURDATE() + INTERVAL 3 DAY, NULL, 'Shipped', NULL, :customerNumber)";
-    $valores = [':orderNumber' => $numOrden, ':customerNumber' => $_SESSION['usuario']];
+    $args = [':orderNumber' => $numOrden, ':customerNumber' => $_SESSION['usuario']];
 
-    $valido = operarBd($sql, $valores);
+    operarBd($sql, $args);
 
-    if ($valido) {
-      $numLinea = 1;
+    $numLinea = 1;
 
-      // Insertamos el detalle del pedido
-      foreach ($carrito as $numProd => $cantProd) {
-        $sql = "INSERT INTO orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber) 
-                VALUES (:orderNumber, :productCode, :quantityOrdered, (SELECT buyPrice FROM products WHERE productCode = :productCode), :orderLineNumber)";
-        $valores = [':orderNumber' => $numOrden, ':productCode' => $numProd, ':quantityOrdered' => $cantProd, ':orderLineNumber' => $numLinea];
-        $valido = operarBd($sql, $valores);
+    // Insertamos el detalle del pedido
+    foreach ($carrito as $numProd => $cantProd) {
+      $sql = "INSERT INTO orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber) 
+              VALUES (:orderNumber, :productCode, :quantityOrdered, (SELECT buyPrice FROM products WHERE productCode = :productCode), :orderLineNumber)";
+      $args = [':orderNumber' => $numOrden, ':productCode' => $numProd, ':quantityOrdered' => $cantProd, ':orderLineNumber' => $numLinea];
+      operarBd($sql, $args);
 
-        $numLinea++;
-      }
+      $numLinea++;
+    }
 
-      if ($valido)
-        echo "<p>Pedido realizado correctamente</p>";
+    // Insertamos el pago si no existe un pago realizado por el usuario con la tarjeta introducida, sino hace un update
+    $sql = "SELECT amount
+            FROM payments
+            WHERE customerNumber = :customerNumber AND checkNumber = :checkNumber";
+    $args = [':customerNumber' => $_SESSION['usuario'], ':checkNumber' => $_SESSION['tarjeta']];
+    $res = operarBd($sql, $args);
+
+    if (!empty($res)) {
+      $sql = "UPDATE payments
+              SET paymentDate = CURDATE(), amount = :amount
+              WHERE customerNumber = :customerNumber AND checkNumber = :checkNumber";
+      $args = [':customerNumber' => $_SESSION['usuario'], ':checkNumber' => $_SESSION['tarjeta'], ':amount' => $_SESSION['precioTotal']];
+      operarBd($sql, $args);
+      
+    } else {
+      $sql = "INSERT INTO payments (customerNumber, checkNumber, paymentDate, amount) 
+              VALUES (:customerNumber, :checkNumber, CURDATE(), :amount)";
+      $args = [':customerNumber' => $_SESSION['usuario'], ':checkNumber' => $_SESSION['tarjeta'], ':amount' => $_SESSION['precioTotal']];
+      operarBd($sql, $args);
     }
   }
 
@@ -192,26 +207,98 @@
     $sql = "SELECT productCode, quantityInStock
             FROM products 
             WHERE productCode = :productCode";
-    $valores = [':productCode' => $prodNum];
-    $datos = operarBd($sql, $valores);
+    $args = [':productCode' => $prodNum];
+    $res = operarBd($sql, $args);
 
     // Verificar si se obtuvo algún resultado
-    if (!empty($datos) && isset($datos[0]['quantityInStock'])) {
-      $cant_actual = $datos[0]['quantityInStock'];
+    if (!empty($res) && isset($res[0]['quantityInStock'])) {
+      $cant_actual = $res[0]['quantityInStock'];
 
       if ($cant_actual >= $cant) {
         $sql_update = "UPDATE products 
                         SET quantityInStock = quantityInStock - :CANTIDAD
                         WHERE productCode = :productCode";
-        $valores_update = [':CANTIDAD' => $cant, ':productCode' => $prodNum];
-        $valido = operarBd($sql_update, $valores_update);
+        $args = [':CANTIDAD' => $cant, ':productCode' => $prodNum];
+        $valido = operarBd($sql_update, $args);
 
         if (!$valido)
-          trigger_error("Error al actualizar el stock del producto $prodNum.", E_USER_ERROR);
+          echo "<p>Error al actualizar el stock del producto $prodNum.</p>";
       } else
         echo "<p>No hay suficiente stock del producto $prodNum.</p>";
     } else
       echo "<p>Error: No se encontró información del producto $prodNum.</p>";
+  }
+
+  // Obtener precio de un producto
+  function obtenerPrecioProducto($productCode) {
+    $sql = "SELECT buyPrice FROM products WHERE productCode = :productCode";
+    $args = [':productCode' => $productCode];
+    $res = operarBd($sql, $args);
+
+    if ($res)
+      $precio = $res[0]['buyPrice'];
+
+    return $precio; 
+  }
+
+  // Calcular el precio total de los productos en el carrito
+  function calcularPrecioTotal($carrito) {
+    $total = 0;
+
+    foreach ($carrito as $producto => $cantidad)
+      $total += obtenerPrecioProducto($producto) * $cantidad;
+
+    return $total;
+  }
+
+  // Verificar si la tarjeta introducida es correcta
+  function comprobarTarjeta($tarjeta) {
+    $tarjeta = strtoupper($tarjeta);
+
+    if (strlen($tarjeta) !== 7)
+      return false;
+
+    return ctype_alpha(substr($tarjeta, 0, 2)) && ctype_digit(substr($tarjeta, 2));
+  }
+
+  // Pasarela de pago
+  function pasarelaPago($precioTotal) {
+    // Datos de la transacción para Redsys
+    $orderId = rand(1000000, 9999999); // Genera un ID único para el pedido
+    $currency = '978'; // EUR (ISO 4217 code)
+    $amount = intval($precioTotal * 100); // Monto en céntimos
+    
+    // Datos de configuración de Redsys
+    $dsSignatureVersion = 'HMAC_SHA256_V1';
+    $merchantCode = '263100000'; // Código de comercio
+    $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7'; // Clave secreta
+    //sq7HjrUOBfKmC576ILgskD5srU870gJ7
+    // redsys nombre:isa clave:Metal123456789Metal
+    $url = 'https://sis-t.redsys.es:25443/sis/realizarPago'; // URL de pago de Redsys
+    $urlOk = 'http://192.168.206.226/DWES/Proyectos/Web%20Pedidos/ok'; // URL de confirmación (pago exitoso)
+    $urlKo = 'http://192.168.206.226/DWES/Proyectos/Web%20Pedidos/ko'; // URL de error
+    
+    $redsys = new RedsysAPI();
+
+    $redsys->setParameter("DS_MERCHANT_AMOUNT",$amount);
+    $redsys->setParameter("DS_MERCHANT_ORDER",$orderId);
+    $redsys->setParameter("DS_MERCHANT_MERCHANTCODE",$merchantCode);
+    $redsys->setParameter("DS_MERCHANT_CURRENCY",$currency);
+    $redsys->setParameter("DS_MERCHANT_TRANSACTIONTYPE",'0');
+    $redsys->setParameter("DS_MERCHANT_TERMINAL",'15');
+    $redsys->setParameter("DS_MERCHANT_MERCHANTURL",$url);
+    $redsys->setParameter("DS_MERCHANT_URLOK",$urlOk);
+    $redsys->setParameter("DS_MERCHANT_URLKO",$urlKo);
+
+    $params = $redsys->createMerchantParameters();
+    $signature = $redsys->createMerchantSignature($secretKey);
+
+    echo "<form name='frm' action='$url' method='POST' id='paymentForm'>";
+    echo "<input type='hidden' name='Ds_SignatureVersion' value='$dsSignatureVersion'>";
+    echo "<input type='hidden' name='Ds_MerchantParameters' value='$params'>";
+    echo "<input type='hidden' name='Ds_Signature' value='$signature'>";
+    echo "</form>";
+    echo "<script type='text/javascript'>document.getElementById('paymentForm').submit();</script>";
   }
 
   // Borra la sesión y recarga la página
