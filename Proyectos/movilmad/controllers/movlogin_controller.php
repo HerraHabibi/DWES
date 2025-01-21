@@ -20,6 +20,7 @@
     limpiar($clave);
     
     require_once('models/movlogin_model.php');
+    require_once('movlogin_controller_funciones.php');
     login($correo, $clave);
 
     redireccionar('views/movwelcome_view.php');
