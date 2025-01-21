@@ -24,4 +24,12 @@
     $value = stripslashes($value);
     $value = htmlspecialchars($value);
   }
+
+  // Función para comprobar si hay un usuario logueado, sino lo redirige al login
+  function comprobarSesion() {
+    if(!isset($_SESSION['usuario'])) {
+      logout();
+      redireccionar('.');
+    }
+  }
 ?>

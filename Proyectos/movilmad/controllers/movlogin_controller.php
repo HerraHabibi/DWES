@@ -4,7 +4,7 @@
   
   // En caso de que ya tenga la sesión iniciada redirigir al welcome
   if (isset($_SESSION['usuario'])) {
-    redireccionar('views/movwelcome_view.php');
+    redireccionar('movwelcome.php');
   } else {
     logout();
     // Cargar formulario
@@ -23,6 +23,6 @@
     require_once('movlogin_controller_funciones.php');
     login($correo, $clave);
 
-    redireccionar('views/movwelcome_view.php');
+    redireccionar('movwelcome.php');
   }
 ?>

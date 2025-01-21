@@ -18,8 +18,8 @@
 		<div class="card-body">
 
 
-		<B>Bienvenido/a:</B>    <BR><BR>
-		<B>Identificador Cliente:</B>  <BR><BR>
+		<B>Bienvenido/a:</B> <?php echo buscarNombre($_SESSION['usuario']); ?><BR><BR>
+		<B>Identificador Cliente:</B> <?php echo $_SESSION['usuario']; ?><BR><BR>
 	 
 		
        <!--Formulario con botones -->
@@ -31,7 +31,7 @@
 		
 		
 		
-		  <BR><a href="../controllers/logout_controller.php">Cerrar Sesión</a>
+		  <BR><a href="controllers/logout_controller.php">Cerrar Sesión</a>
 	</div>  
 	  
 	  

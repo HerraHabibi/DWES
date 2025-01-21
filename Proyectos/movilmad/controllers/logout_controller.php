@@ -2,5 +2,5 @@
   require_once('movcomun_controller.php');
 
   logout();
-  redireccionar('../index.php');
+  redireccionar('..');
 ?>

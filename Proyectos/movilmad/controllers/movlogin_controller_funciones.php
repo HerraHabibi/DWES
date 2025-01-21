@@ -9,8 +9,10 @@
     $cliente = buscarEmail($email);
     
     // Si el cliente no existe o no es correcta la contraseña da error
-    if (empty($cliente) || $clave != $cliente['idcliente'])
+    if (empty($cliente) || $clave != $cliente[0]['idcliente'])
       trigger_error('Login inválido', E_USER_WARNING);
+
+    $cliente = $cliente[0];
   
     // Si el cliente ha sido dado de baja da error
     if ($cliente['fecha_baja'] != null)
@@ -22,6 +24,6 @@
   
     // Inicia la sesión del cliente
     session_start();
-    $_SESSION['usuario'] = $cliente[0]['idcliente'];
+    $_SESSION['usuario'] = $cliente['idcliente'];
   }
 ?>
