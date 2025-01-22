@@ -33,4 +33,14 @@
       return false;
     }
   }
+
+  // Función para obtener el nombre de un cliente en la base de datos por su ID
+  function obtenerNombre($idCliente) {
+    $sql = "SELECT nombre
+              FROM rclientes
+              WHERE idcliente = :idcliente";
+    $args = [':idcliente' => $idCliente];
+    
+    return operarBd($sql, $args)[0]['nombre'];
+  }
 ?>

@@ -1,5 +1,4 @@
 <html>
-   
  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,17 +20,24 @@
 	<!-- INICIO DEL FORMULARIO -->
 	<form action="" method="post">
 	
-		<B>Bienvenido/a:</B>  <BR><BR>
-		<B>Identificador Cliente:</B>   <BR><BR>
+		<b>Bienvenido/a:</b> <?php mostrarNombre(); ?>
+		<br>
+		<b>Identificador Cliente:</b> <?php echo $_SESSION['usuario']; ?>
 		
-		<B>Vehiculos disponibles en este momento:</B>  <BR><BR>
+		<br><br>
 		
-			<B>Matricula/Marca/Modelo: </B><select name="vehiculos" class="form-control">
-				
-			</select>
+		<b>Vehiculos disponibles en este momento:</b> <?php mostrarFechaHora(); ?>
+		<br>
+		<b>Matricula/Marca/Modelo: </b>
+
+		<br>
 			
+		<select name="vehiculos" class="form-control">
+			<?php selectVehiculosDisponibles(); ?>
+		</select>
+
+		<br>
 		
-		<BR> <BR><BR><BR><BR><BR>
 		<div>
 			<input type="submit" value="Agregar a Cesta" name="agregar" class="btn btn-warning disabled">
 			<input type="submit" value="Realizar Alquiler" name="alquilar" class="btn btn-warning disabled">

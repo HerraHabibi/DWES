@@ -32,4 +32,9 @@
       redireccionar('.');
     }
   }
+
+  // Función para mostrar el nombre del cliente
+  function mostrarNombre() {
+    echo obtenerNombre($_SESSION['usuario']);
+  }
 ?>

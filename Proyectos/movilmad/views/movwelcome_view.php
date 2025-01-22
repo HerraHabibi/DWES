@@ -18,13 +18,13 @@
 		<div class="card-body">
 
 
-		<B>Bienvenido/a:</B> <?php echo buscarNombre($_SESSION['usuario']); ?><BR><BR>
+		<B>Bienvenido/a:</B> <?php mostrarNombre(); ?><BR><BR>
 		<B>Identificador Cliente:</B> <?php echo $_SESSION['usuario']; ?><BR><BR>
 	 
 		
        <!--Formulario con botones -->
 	
-		<input type="button" value="Alquilar Vehículo" onclick="window.location.href=''" class="btn btn-warning disabled">
+		<input type="button" value="Alquilar Vehículo" onclick="window.location.href='movalquilar.php'" class="btn btn-warning disabled">
 		<input type="button" value="Consultar Alquileres" onclick="window.location.href=''" class="btn btn-warning disabled">
 		<input type="button" value="Devolver Vehículo" onclick="window.location.href=''" class="btn btn-warning disabled">
 		</br></br>

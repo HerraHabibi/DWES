@@ -6,7 +6,7 @@
       trigger_error('Debes rellenar todos los campos', E_USER_WARNING);
   
     // Buscar si existe el cliente
-    $cliente = buscarEmail($email);
+    $cliente = buscarPorEmail($email);
     
     // Si el cliente no existe o no es correcta la contraseña da error
     if (empty($cliente) || $clave != $cliente[0]['idcliente'])
