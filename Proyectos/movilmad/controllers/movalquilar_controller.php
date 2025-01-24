@@ -27,4 +27,8 @@
     vaciarCesta();
     echo 'Se vació la cesta <br>';
   }
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['volver'])) {
+    redireccionar('movwelcome.php');
+  }
 ?>

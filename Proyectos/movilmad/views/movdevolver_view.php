@@ -35,7 +35,7 @@
 		</div>		
 	</form>
 	<!-- FIN DEL FORMULARIO -->
-	<a href = "">Cerrar Sesion</a>
+	<a href="controllers/logout_controller.php">Cerrar Sesión</a>
 	
   </body>
    
