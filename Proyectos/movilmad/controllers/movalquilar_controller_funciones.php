@@ -92,6 +92,7 @@
     echo '</table>';
   }
 
+  // Función para alquilar los vehículos de la cesta
   function alquilarVehiculos() {
     $cesta = isset($_COOKIE['cesta']) ? unserialize($_COOKIE['cesta']) : array();
 

@@ -13,6 +13,7 @@
       trigger_error('La fecha de inicio debe ser anterior a la de fin', E_USER_WARNING);
   }
 
+  // Función para mostrar los vehículos que tiene el usuario actual alquilados
   function mostrarAlquileres($alquileres) {
     if (empty($alquileres))
       echo 'No has alquilado ningún vehículo entre estas fechas<br>';
@@ -50,6 +51,7 @@
     }
   }
 
+  // Función para mostrar la fecha y hora con el formato DD/MM/YYYY HH:MM:SS
   function formatearHora(&$fechaHora) {
     $timestamp = strtotime($fechaHora);
     $fechaHora = date('d/m/Y H:i:s', $timestamp);
