@@ -14,11 +14,11 @@
 
     comprobarVehiculo($vehiculo);
 
-    almacenarVehiculo($vehiculo);
-
     $precioBase = obtenerPrecioBase($vehiculo);
     $tiempoAlquiler = obtenerTiempoAlquiler($vehiculo);
     $precio = calcularPrecioAlquiler($precioBase, $tiempoAlquiler);
+    
+    almacenarDevolucion($vehiculo, $tiempoAlquiler);
 
     require_once('apiRedsys.php');
     pasarelaPago($precio);
