@@ -48,11 +48,11 @@
     return operarBd($sql, $args);
   }
 
-  function cambiarDisponibilidadVehiculo($matricula, $disponible) {
+  function cambiarDisponibilidadVehiculo($matricula) {
     $sql = "UPDATE rvehiculos
-              SET disponible = :disponible
+              SET disponible = 'N'
               WHERE matricula = :matricula";
-    $args = [':matricula' => $matricula, ':disponible' => $disponible];
+    $args = [':matricula' => $matricula];
     
     return operarBd($sql, $args);
   }

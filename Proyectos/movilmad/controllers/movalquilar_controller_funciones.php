@@ -106,7 +106,7 @@
 
     foreach ($cesta[$_SESSION['usuario']] as $vehiculo) {
       insertarAlquilarVehiculo($_SESSION['usuario'], $vehiculo);
-      cambiarDisponibilidadVehiculo($vehiculo, 'N');
+      cambiarDisponibilidadVehiculo($vehiculo);
     }
     
     echo 'Has alquilado los vehículos: <br>';

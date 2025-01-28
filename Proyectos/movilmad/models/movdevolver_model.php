@@ -14,6 +14,13 @@
     return operarBd($sql, $args);
   }
 
+  // Función para obtener la fecha de devolución de un vehículo
+  function obtenerHoraDevolucion() {
+    $sql = "SELECT NOW() AS fecha_devolucion";
+
+    return operarBd($sql)[0]['fecha_devolucion'];
+  }
+
   // Función para obtener el tiempo de alquiler de un vehículo
   function obtenerTiempoAlquiler($matricula) {
     $sql = "SELECT TIMESTAMPDIFF(MINUTE, fecha_alquiler, NOW()) AS tiempo_alquiler

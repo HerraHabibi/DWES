@@ -15,10 +15,25 @@
       trigger_error('Debes seleccionar un vehículo', E_USER_WARNING);
   }
 
+  // Función para calcular la hora de devolución
+  function calcularFechaDevolucion() {
+    date_default_timezone_set('Europe/Madrid');
+    return date('Y-m-d H:i:s');
+  }
+
+  // Función para hacer que el precio del alquiler empiece desde el precio base y no desde 0
+  function arreglarTiempoAlquiler($tiempoAlquiler) {
+    if ($tiempoAlquiler < 1)
+      $tiempoAlquiler = 1;
+
+    return $tiempoAlquiler;
+  }
+
   // Función para crear una cookie con la información de la devolución
-  function almacenarDevolucion($vehiculo, $tiempoAlquiler) {
+  function almacenarDevolucion($vehiculo, $fechaDevolucion, $tiempoAlquiler) {
     $datos = array(
       'vehiculo' => $vehiculo,
+      'fechaDevolucion' => $fechaDevolucion,
       'tiempoAlquiler' => $tiempoAlquiler
     );
 
@@ -41,8 +56,7 @@
     
     // Datos de configuración de Redsys
     $dsSignatureVersion = 'HMAC_SHA256_V1';
-    // $merchantCode = '999008881'; // Código de comercio
-    $merchantCode = '263100000'; // Código de comercio
+    $merchantCode = '263100000';  // Código de comercio || $merchantCode = '999008881';
     $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7'; // Clave secreta
     $url = 'https://sis-t.redsys.es:25443/sis/realizarPago'; // URL de pago de Redsys
     $urlOk = 'http://192.168.206.226/DWES/Proyectos/movilmad/ok'; // URL de confirmación (pago exitoso)
