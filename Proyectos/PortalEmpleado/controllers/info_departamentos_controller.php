@@ -9,12 +9,12 @@
   require_once('views/info_departamentos_view.php');
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $codDept = $_POST['codDept'] ?? '';
+    $departamento = $_POST['departamento'] ?? '';
 
-    limpiar($codDept);
+    limpiar($departamento);
 
-    comprobarVacio($codDept);
+    comprobarVacio($departamento);
 
-    mostrarInfoDept($codDept);
+    mostrarInfoDept($departamento);
   }
 ?>

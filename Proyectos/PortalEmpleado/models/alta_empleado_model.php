@@ -1,14 +1,6 @@
 <?php
   require_once('comun_model.php');
 
-  // Función para obtener los datos sobre los departamentos
-  function datosDepartamentos() {
-    $sql = "SELECT *
-              FROM departments";
-
-    return operarBd($sql);
-  }
-
   function ultimoEmpleadoCreado() {
     $sql = "SELECT max(emp_no)
               FROM employees";

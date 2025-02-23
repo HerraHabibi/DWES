@@ -50,4 +50,12 @@
     
     return operarBd($sql, $args);
   }
+
+  // Función para obtener los datos sobre los departamentos
+  function datosDepartamentos() {
+    $sql = "SELECT *
+              FROM departments";
+
+    return operarBd($sql);
+  }
 ?>
